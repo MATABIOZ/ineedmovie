@@ -1,3 +1,0 @@
-# ineedmovie
-
-React movie finder
