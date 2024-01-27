@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
-import { ColorThemeContext } from "context/color_theme/color_theme_context_provider";
-import { HeaderContext } from "context/header_context/header_context_provider";
+
+import { ColorThemeContext } from "../../../../../../context/color_theme/color_theme_context_provider";
+import { HeaderContext } from "../../../../../../context/header_context/header_context_provider";
 
 import { StyledHeaderButton } from "./header_button_wrapper.styled";
 

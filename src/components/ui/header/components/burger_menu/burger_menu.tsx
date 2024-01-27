@@ -1,7 +1,8 @@
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { ColorThemeContext } from "context/color_theme/color_theme_context_provider";
-import { HeaderContext } from "context/header_context/header_context_provider";
+
+import { ColorThemeContext } from "../../../../../context/color_theme/color_theme_context_provider";
+import { HeaderContext } from "../../../../../context/header_context/header_context_provider";
 
 import {
   StyledBurgerMenu,

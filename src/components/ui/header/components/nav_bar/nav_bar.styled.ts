@@ -1,8 +1,14 @@
 import { NavLink } from "react-router-dom";
-import { IColorsProps, Theme } from "context/color_theme/color_themes";
 import styled from "styled-components";
 
-import { MEDIA_LAPTOP, MEDIA_LARGE_LAPTOP } from "components/consts/media_vars";
+import {
+  IColorsProps,
+  Theme,
+} from "../../../../../context/color_theme/color_themes";
+import {
+  MEDIA_LAPTOP,
+  MEDIA_LARGE_LAPTOP,
+} from "../../../../consts/media_vars";
 
 export const StyledNavBar = styled.div({
   display: "flex",

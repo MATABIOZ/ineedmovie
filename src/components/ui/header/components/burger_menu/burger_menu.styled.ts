@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { IColorsProps, Theme } from "context/color_theme/color_themes";
 import { styled } from "styled-components";
 
-import { MEDIA_MOBILE } from "components/consts/media_vars";
+import {
+  IColorsProps,
+  Theme,
+} from "../../../../../context/color_theme/color_themes";
+import { MEDIA_MOBILE } from "../../../../consts/media_vars";
 
 export const StyledBurgerMenu = styled.div({
   display: "flex",
@@ -11,6 +14,7 @@ export const StyledBurgerMenu = styled.div({
   width: "100%",
   position: "absolute",
   right: 0,
+  zIndex: 2,
   [MEDIA_MOBILE]: {
     justifyContent: "center",
   },

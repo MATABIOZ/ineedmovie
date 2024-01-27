@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { ColorThemeContext } from "context/color_theme/color_theme_context_provider";
+
+import { ColorThemeContext } from "../../../../../context/color_theme/color_theme_context_provider";
 
 import {
   StyledNavBar,

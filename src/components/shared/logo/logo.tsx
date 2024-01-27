@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { ColorThemeContext } from "context/color_theme/color_theme_context_provider";
+
+import { ColorThemeContext } from "../../../context/color_theme/color_theme_context_provider";
 
 import {
   StyledLogo,

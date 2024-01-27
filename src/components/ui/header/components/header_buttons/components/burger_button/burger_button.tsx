@@ -1,8 +1,9 @@
 import { useContext } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { ColorThemeContext } from "context/color_theme/color_theme_context_provider";
-import { HeaderContext } from "context/header_context/header_context_provider";
+
+import { ColorThemeContext } from "../../../../../../../context/color_theme/color_theme_context_provider";
+import { HeaderContext } from "../../../../../../../context/header_context/header_context_provider";
 
 import { StyledBurgerButton } from "./burger_button.styled";
 

@@ -1,6 +1,8 @@
 import ReactDOM from "react-dom/client";
-import { ColorThemeContextProvider } from "context/color_theme/color_theme_context_provider";
+import { Provider } from "react-redux";
 
+import { ColorThemeContextProvider } from "./context/color_theme/color_theme_context_provider";
+import { store } from "./redux/store/store";
 import App from "./App";
 
 import "./normalize.css";
@@ -11,7 +13,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <ColorThemeContextProvider>
-    <App />
-  </ColorThemeContextProvider>,
+  <Provider store={store}>
+    <ColorThemeContextProvider>
+      <App />
+    </ColorThemeContextProvider>
+  </Provider>,
 );

@@ -1,7 +1,10 @@
-import { IColorsProps } from "context/color_theme/color_themes";
 import styled from "styled-components";
 
-import { MEDIA_LAPTOP, MEDIA_MOBILE } from "components/consts/media_vars";
+import { IColorsProps } from "../../../../../../../context/color_theme/color_themes";
+import {
+  MEDIA_LAPTOP,
+  MEDIA_MOBILE,
+} from "../../../../../../consts/media_vars";
 
 export const StyledBurgerButton = styled.button<IColorsProps>(
   ({ $colors }) => ({

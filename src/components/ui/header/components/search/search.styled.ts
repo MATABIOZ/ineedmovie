@@ -1,13 +1,12 @@
-import { IColorsProps } from "context/color_theme/color_themes";
 import styled from "styled-components";
 
-import { MEDIA_LARGE_LAPTOP } from "components/consts/media_vars";
+import { IColorsProps } from "../../../../../context/color_theme/color_themes";
+import { MEDIA_LARGE_LAPTOP } from "../../../../consts/media_vars";
 
 export const StyledSearchWrapper = styled.div({
   display: "flex",
   justifyContent: "center",
   width: "100%",
-  paddingBottom: 25,
 });
 
 export const StyledSearch = styled.input<IColorsProps>(({ $colors }) => ({

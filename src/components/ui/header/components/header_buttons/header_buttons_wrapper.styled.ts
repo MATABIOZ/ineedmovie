@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { MEDIA_LARGE_LAPTOP } from "components/consts/media_vars";
+import { MEDIA_LARGE_LAPTOP } from "../../../../consts/media_vars";
 
 export const StyledHeaderButtonsWrapper = styled.div({
   display: "flex",

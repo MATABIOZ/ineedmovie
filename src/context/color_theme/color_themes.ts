@@ -23,7 +23,7 @@ enum LightColors {
   THIN_BORDER = "#CCC",
   MAIN_TEXT = "#333",
   SECONDARY_TEXT = "#666",
-  SUBTEXT = "#CCC",
+  SUBTEXT = "#888",
 }
 
 export type ThemeType = "dark" | "light";
