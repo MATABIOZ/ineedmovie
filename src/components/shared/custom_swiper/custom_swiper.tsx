@@ -64,6 +64,7 @@ export const CustomSwiper: FC<ICustomSwiperProps> = ({
                 title={item.title}
                 overview={item.overview}
                 backgroundLink={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                inSwiper={true}
               />
             )}
           </SwiperSlide>

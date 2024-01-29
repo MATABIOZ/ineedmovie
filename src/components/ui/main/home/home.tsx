@@ -4,7 +4,7 @@ import { ErrorMessage } from "../../../shared/error_message/error_message";
 import { Loader } from "../../../shared/loader/loader";
 import { Header } from "../../header/header";
 
-export const Movies = () => {
+export const Home = () => {
   const loading = useAppSelector((state) => state.appContentReducer.loading);
   const errorMessage = useAppSelector(
     (state) => state.appContentReducer.errorMessage,

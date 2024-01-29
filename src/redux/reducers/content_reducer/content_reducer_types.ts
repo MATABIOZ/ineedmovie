@@ -126,8 +126,30 @@ export interface IVideos {
 export interface IInitialContentState {
   singleMovie: ISingleMovie;
   genres: IGenres;
-  popularMovies: IMovieList;
   videos: Array<IVideos>;
   loading: boolean;
   errorMessage: string;
+  popularMovies: IMovieList;
+  nowPlayingMovies: IMovieList;
+  topRatedMovies: IMovieList;
+  upcomingMovies: IMovieList;
+  actionMovies: IMovieList;
+  adventureMovies: IMovieList;
+  animationMovies: IMovieList;
+  comedyMovies: IMovieList;
+  crimeMovies: IMovieList;
+  documentaryMovies: IMovieList;
+  dramaMovies: IMovieList;
+  familyMovies: IMovieList;
+  fantasyMovies: IMovieList;
+  historyMovies: IMovieList;
+  horrorMovies: IMovieList;
+  musicMovies: IMovieList;
+  mysteryMovies: IMovieList;
+  romanceMovies: IMovieList;
+  scienceFictionMovies: IMovieList;
+  tvMovieMovies: IMovieList;
+  thrillerMovies: IMovieList;
+  warMovies: IMovieList;
+  westernMovies: IMovieList;
 }

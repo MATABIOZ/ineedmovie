@@ -15,7 +15,7 @@ export const NavBar = () => {
 
   const { pathname } = useLocation();
 
-  const navLinkTitlesArr = ["Movies", "Genres", "Favorites", "About"];
+  const navLinkTitlesArr = ["Home", "Genres", "Favorites"];
 
   return (
     <StyledNavBar>

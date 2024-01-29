@@ -1,4 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 import { ColorThemeContext } from "../../../context/color_theme/color_theme_context_provider";
@@ -20,6 +22,7 @@ interface IBannerProps {
   title: string;
   overview: string;
   backgroundLink: string;
+  inSwiper: boolean;
 }
 
 export const Banner: FC<IBannerProps> = ({
@@ -27,11 +30,14 @@ export const Banner: FC<IBannerProps> = ({
   title,
   overview,
   backgroundLink,
+  inSwiper,
 }) => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
 
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const videos = useAppSelector((state) => state.appContentReducer.videos);
   const trailerKey = videos
@@ -47,6 +53,10 @@ export const Banner: FC<IBannerProps> = ({
     setShowPlayer(true);
   };
 
+  const handleNavigate = () => {
+    navigate(`/movie/${movieId}`);
+  };
+
   return (
     <StyledContainer>
       <StyledBannerWrapper $colors={colors} $backgroundLink={backgroundLink}>
@@ -59,9 +69,17 @@ export const Banner: FC<IBannerProps> = ({
             <StyledColorfulButton
               $colors={colors}
               type="button"
-              onClick={handleWatchTrailer}
+              onClick={inSwiper ? handleNavigate : handleWatchTrailer}
             >
-              <PlayArrowIcon /> Watch Trailer
+              {inSwiper ? (
+                <>
+                  <DoubleArrowIcon /> Go To Movie
+                </>
+              ) : (
+                <>
+                  <PlayArrowIcon /> Watch Trailer
+                </>
+              )}
             </StyledColorfulButton>
           </StyledBannerInfoWrapper>
         ) : (

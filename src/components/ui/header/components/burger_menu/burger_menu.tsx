@@ -16,7 +16,7 @@ export const BurgerMenu = () => {
 
   const { pathname } = useLocation();
 
-  const burgerNavLinkTitlesArr = ["Movies", "Genres", "Favorites", "About"];
+  const burgerNavLinkTitlesArr = ["Home", "Genres", "Favorites"];
 
   const { burgerIsActive, setBurgerIsActive, burgerMenuRef } =
     useContext(HeaderContext);
