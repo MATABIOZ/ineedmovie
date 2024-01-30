@@ -19,7 +19,7 @@ export const StyledColorfulButton = styled.button<IColorsProps>(
       padding: "14px 20px",
       fontSize: "14px",
     },
-    "> svg": {
+    "& > svg": {
       color: $colors.mainText,
       fontSize: "28px",
       [MEDIA_LARGE_LAPTOP]: {

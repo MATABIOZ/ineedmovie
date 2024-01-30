@@ -31,7 +31,7 @@ export interface IMovieGroup {
   pathTitle: string;
 }
 
-export const movieGroupsArr: Array<IMovieGroup> = [
+export const movieGroupArr: Array<IMovieGroup> = [
   {
     groupType: "main",
     title: "Now Playing",

@@ -207,9 +207,36 @@ export const appContentSlice = createSlice({
         state.errorMessage = `${action.payload}`;
       })
       .addCase(getVideos.pending, (state) => {
+        state.loading = true;
         state.errorMessage = "";
       })
+      .addCase(getVideos.fulfilled, (state) => {
+        state.loading = false;
+      })
       .addCase(getVideos.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = `${action.payload}`;
+      })
+      .addCase(getMovies.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = "";
+      })
+      .addCase(getMovies.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(getMovies.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = `${action.payload}`;
+      })
+      .addCase(getNextPageMovies.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = "";
+      })
+      .addCase(getNextPageMovies.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(getNextPageMovies.rejected, (state, action) => {
+        state.loading = false;
         state.errorMessage = `${action.payload}`;
       }),
 });

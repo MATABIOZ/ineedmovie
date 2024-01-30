@@ -16,7 +16,7 @@ export const StyledSwiperController = styled.div<IColorsProps>(
     alignItems: "center",
     border: `1px solid ${$colors.thickBorder}`,
     borderRadius: "8px",
-    margin: "14px 16px",
+    margin: "14px 16px 0",
     padding: "10px",
     background: $colors.itemBackground,
     [MEDIA_LARGE_LAPTOP]: {

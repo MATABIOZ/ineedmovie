@@ -6,8 +6,10 @@ import {
   Routes,
 } from "react-router-dom";
 
-import { movieGroupsArr } from "./components/consts/movie_groups";
+import { movieGroupArr } from "./components/consts/movie_groups";
+import { ContentWrapper } from "./components/shared/content_wrapper/content_wrapper";
 import { Header } from "./components/ui/header/header";
+import { Genres } from "./components/ui/main/genres/genres";
 import { Home } from "./components/ui/main/home/home";
 import { ColorThemeContext } from "./context/color_theme/color_theme_context_provider";
 import {
@@ -25,7 +27,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getGenres());
-    dispatch(getMovies(movieGroupsArr));
+    dispatch(getMovies(movieGroupArr));
     // dispatch(
     //   getNextPageMovies({
     //     group: {
@@ -45,11 +47,16 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/home/:movie_group" element={<></>} />
-          <Route path="/genres" element={<Header />} />
-          <Route path="/genres/:movie_group" element={<></>} />
+          <Route
+            path="/home/:movie_group"
+            element={<ContentWrapper groupType={"specific group"} />}
+          />
+          <Route path="/genres" element={<Genres />} />
+          <Route
+            path="/genres/:movie_group"
+            element={<ContentWrapper groupType={"specific group"} />}
+          />
           <Route path="/favorites" element={<Header />} />
-          <Route path="/about" element={<Header />} />
           <Route path="/movie/:movie_id" element={<></>} />
         </Routes>
       </Router>

@@ -25,6 +25,7 @@ export const StyledBannerWrapper = styled.div<IStyledBannerWrapperProps>(
     borderRadius: 12,
     border: `1px solid ${$colors.thinBorder}`,
     overflow: "hidden",
+    position: "relative",
     [MEDIA_LAPTOP]: {
       height: 590,
     },
@@ -41,6 +42,8 @@ export const StyledBannerInfoWrapper = styled.div({
   alignItems: "center",
   width: "100%",
   padding: 50,
+  textAlign: "center",
+  gap: 16,
   [MEDIA_LARGE_LAPTOP]: {
     padding: 40,
   },
@@ -52,17 +55,21 @@ export const StyledBannerInfoWrapper = styled.div({
   },
 });
 
+export const StyledBannerInfoInner = styled.div({
+  display: "flex",
+  alignItems: "center",
+  gap: 16,
+});
+
 export const StyledBannerTitle = styled.h2<IColorsProps>(({ $colors }) => ({
   fontSize: 38,
   fontWeight: 700,
-  lineHeight: "150%",
   color: $colors.mainText,
   [MEDIA_LARGE_LAPTOP]: {
     fontSize: 30,
   },
   [MEDIA_MOBILE]: {
     fontSize: 24,
-    paddingBottom: 20,
   },
 }));
 
@@ -72,10 +79,8 @@ export const StyledBannerOverview = styled.p<IColorsProps>(({ $colors }) => ({
   lineHeight: "150%",
   color: $colors.subText,
   textAlign: "center",
-  paddingBottom: 30,
   [MEDIA_LARGE_LAPTOP]: {
     fontSize: 16,
-    paddingBottom: 24,
   },
   [MEDIA_LAPTOP]: {
     fontSize: 13,

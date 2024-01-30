@@ -7,10 +7,14 @@ import { ColorThemeContext } from "../../../context/color_theme/color_theme_cont
 import { getVideos } from "../../../redux/reducers/content_reducer/content_reducer";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import { StyledColorfulButton } from "../buttons/colorful_button.styled";
+import { FavoriteButton } from "../buttons/favorite_button/favorite_button";
 import { StyledContainer } from "../container.styled";
 import { Player } from "../player/player";
+import { ReleaseDate } from "../release_date/release_date";
+import { VoteAverage } from "../vote_average/vote_average";
 
 import {
+  StyledBannerInfoInner,
   StyledBannerInfoWrapper,
   StyledBannerOverview,
   StyledBannerTitle,
@@ -23,6 +27,8 @@ interface IBannerProps {
   overview: string;
   backgroundLink: string;
   inSwiper: boolean;
+  voteAverage: number;
+  releaseDate: string;
 }
 
 export const Banner: FC<IBannerProps> = ({
@@ -31,6 +37,8 @@ export const Banner: FC<IBannerProps> = ({
   overview,
   backgroundLink,
   inSwiper,
+  voteAverage,
+  releaseDate,
 }) => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
@@ -46,7 +54,7 @@ export const Banner: FC<IBannerProps> = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getVideos(movieId));
+    !inSwiper && dispatch(getVideos(movieId));
   }, []);
 
   const handleWatchTrailer = () => {
@@ -60,9 +68,14 @@ export const Banner: FC<IBannerProps> = ({
   return (
     <StyledContainer>
       <StyledBannerWrapper $colors={colors} $backgroundLink={backgroundLink}>
+        <FavoriteButton movieId={movieId} />
         {!showPlayer ? (
           <StyledBannerInfoWrapper>
             <StyledBannerTitle $colors={colors}>{title}</StyledBannerTitle>
+            <StyledBannerInfoInner>
+              <ReleaseDate releaseDate={releaseDate} />
+              <VoteAverage voteAverage={voteAverage} />
+            </StyledBannerInfoInner>
             <StyledBannerOverview $colors={colors}>
               {overview}
             </StyledBannerOverview>
