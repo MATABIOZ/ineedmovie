@@ -100,29 +100,33 @@ export const CustomSwiper: FC<ICustomSwiperProps> = ({
         }}
         style={{ overflow: "hidden", width: "100%", gap: "20px" }}
       >
-        {movieArr?.map((item) => (
-          <SwiperSlide key={item.id}>
-            {swiperFor === "banners" ? (
-              <Banner
-                movieId={item.id}
-                title={item.title}
-                overview={item.overview}
-                backgroundLink={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
-                inSwiper={true}
-                voteAverage={item.vote_average}
-                releaseDate={item.release_date}
-              />
-            ) : (
-              <Card
-                movieId={item.id}
-                title={item.title}
-                backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
-                voteAverage={item.vote_average}
-                releaseDate={item.release_date}
-              />
-            )}
-          </SwiperSlide>
-        ))}
+        {movieArr?.map(
+          (item) =>
+            item.backdrop_path &&
+            item.poster_path && (
+              <SwiperSlide key={item.id}>
+                {swiperFor === "banners" ? (
+                  <Banner
+                    movieId={item.id}
+                    title={item.title}
+                    overview={item.overview}
+                    backgroundLink={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                    inSwiper={true}
+                    voteAverage={item.vote_average}
+                    releaseDate={item.release_date}
+                  />
+                ) : (
+                  <Card
+                    movieId={item.id}
+                    title={item.title}
+                    backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
+                    voteAverage={item.vote_average}
+                    releaseDate={item.release_date}
+                  />
+                )}
+              </SwiperSlide>
+            ),
+        )}
       </Swiper>
       <StyledSwiperController $colors={colors}>
         <button

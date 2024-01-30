@@ -45,6 +45,7 @@ const initialContentState: IInitialContentState = {
   thrillerMovies: {} as IMovieList,
   warMovies: {} as IMovieList,
   westernMovies: {} as IMovieList,
+  searchResults: {} as IMovieList,
 };
 
 export const getSingleMovie = createAsyncThunk<void, number>(
@@ -145,6 +146,57 @@ export const getNextPageMovies = createAsyncThunk<
   }
 });
 
+export interface IGetSearchResultsProps {
+  value: string;
+  setNoResults?: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsVisibleNoResultsMessage?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const getSearchResults = createAsyncThunk<void, IGetSearchResultsProps>(
+  "content/getSearchResults",
+  async (props, { dispatch, rejectWithValue }) => {
+    try {
+      const { data } = await axiosTmdbApiInstance.get<IMovieList>(
+        `/search/movie?query=${props.value}&include_adult=false&page=1`,
+      );
+      props.setNoResults &&
+        props.setNoResults(data.total_results === 0 ? true : false);
+      props.setIsVisibleNoResultsMessage &&
+        props.setIsVisibleNoResultsMessage(
+          data.total_results === 0 ? true : false,
+        );
+      dispatch(addSearchResults(data));
+    } catch (error) {
+      error instanceof AxiosError &&
+        error.response &&
+        rejectWithValue(
+          `${error.response.status}(${error.response.statusText})`,
+        );
+    }
+  },
+);
+
+export const getNextPageSearchResults = createAsyncThunk<
+  void,
+  { page: number; value: string }
+>(
+  "content/getNextPageSearchResults",
+  async (props, { dispatch, rejectWithValue }) => {
+    try {
+      const { data } = await axiosTmdbApiInstance.get<IMovieList>(
+        `/search/movie?query=${props.value}&include_adult=false&page=${props.page + 1}`,
+      );
+      dispatch(addNextPageSearchResults(data.results));
+    } catch (error) {
+      error instanceof AxiosError &&
+        error.response &&
+        rejectWithValue(
+          `${error.response.status}(${error.response.statusText})`,
+        );
+    }
+  },
+);
+
 export const appContentSlice = createSlice({
   name: "appContent",
   initialState: initialContentState,
@@ -178,8 +230,17 @@ export const appContentSlice = createSlice({
         ...state[`${action.payload.statePrefix}Movies`].results,
         ...action.payload.data,
       ];
-
       state[`${action.payload.statePrefix}Movies`].page += 1;
+    },
+    addSearchResults: (state, action: PayloadAction<IMovieList>) => {
+      state.searchResults = action.payload;
+    },
+    addNextPageSearchResults: (state, action: PayloadAction<Array<IMovie>>) => {
+      state.searchResults.results = [
+        ...state.searchResults.results,
+        ...action.payload,
+      ];
+      state.searchResults.page += 1;
     },
   },
   extraReducers: (builder) =>
@@ -238,6 +299,17 @@ export const appContentSlice = createSlice({
       .addCase(getNextPageMovies.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = `${action.payload}`;
+      })
+      .addCase(getSearchResults.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = "";
+      })
+      .addCase(getSearchResults.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(getSearchResults.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = `${action.payload}`;
       }),
 });
 
@@ -247,6 +319,8 @@ export const {
   addVideos,
   addMovies,
   addNextPageMovies,
+  addSearchResults,
+  addNextPageSearchResults,
 } = appContentSlice.actions;
 
 export const appContentReducer = appContentSlice.reducer;

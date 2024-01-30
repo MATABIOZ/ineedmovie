@@ -152,4 +152,5 @@ export interface IInitialContentState {
   thrillerMovies: IMovieList;
   warMovies: IMovieList;
   westernMovies: IMovieList;
+  searchResults: IMovieList;
 }

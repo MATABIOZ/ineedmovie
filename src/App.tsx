@@ -7,10 +7,12 @@ import {
 } from "react-router-dom";
 
 import { movieGroupArr } from "./components/consts/movie_groups";
-import { ContentWrapper } from "./components/shared/content_wrapper/content_wrapper";
+import { ScrollToTopButton } from "./components/shared/buttons/scroll_to_top_button/scroll_to_top_button";
 import { Header } from "./components/ui/header/header";
 import { Genres } from "./components/ui/main/genres/genres";
 import { Home } from "./components/ui/main/home/home";
+import { SearchResults } from "./components/ui/main/search_results/search_results";
+import { SpecificGroup } from "./components/ui/main/specific_group/specific_group";
 import { ColorThemeContext } from "./context/color_theme/color_theme_context_provider";
 import {
   getGenres,
@@ -28,17 +30,6 @@ function App() {
   useEffect(() => {
     dispatch(getGenres());
     dispatch(getMovies(movieGroupArr));
-    // dispatch(
-    //   getNextPageMovies({
-    //     group: {
-    //       groupType: "main",
-    //       title: "Now Playing",
-    //       camelCaseTitle: "nowPlaying",
-    //       pathTitle: "now_playing",
-    //     },
-    //     page: 1,
-    //   }),
-    // );
   }, []);
 
   return (
@@ -47,19 +38,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route
-            path="/home/:movie_group"
-            element={<ContentWrapper groupType={"specific group"} />}
-          />
+          <Route path="/home/:movie_group" element={<SpecificGroup />} />
           <Route path="/genres" element={<Genres />} />
-          <Route
-            path="/genres/:movie_group"
-            element={<ContentWrapper groupType={"specific group"} />}
-          />
+          <Route path="/genres/:movie_group" element={<SpecificGroup />} />
           <Route path="/favorites" element={<Header />} />
           <Route path="/movie/:movie_id" element={<></>} />
+          <Route path="/search/:value" element={<SearchResults />} />
         </Routes>
       </Router>
+      <ScrollToTopButton />
     </StyledApp>
   );
 }

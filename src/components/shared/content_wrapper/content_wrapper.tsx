@@ -3,7 +3,11 @@ import { useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 
 import { ColorThemeContext } from "../../../context/color_theme/color_theme_context_provider";
-import { getNextPageMovies } from "../../../redux/reducers/content_reducer/content_reducer";
+import {
+  getNextPageMovies,
+  getNextPageSearchResults,
+  getSearchResults,
+} from "../../../redux/reducers/content_reducer/content_reducer";
 import { IMovie } from "../../../redux/reducers/content_reducer/content_reducer_types";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import { IMovieGroup, movieGroupArr } from "../../consts/movie_groups";
@@ -17,12 +21,14 @@ import { ErrorMessage } from "../error_message/error_message";
 import {
   StyledContentWrapper,
   StyledContentWrapperCardsContainer,
+  StyledContentWrapperHeaderContainer,
+  StyledContentWrapperSearchValue,
   StyledContentWrapperTitle,
   StyledContentWrapperTitleContainer,
 } from "./content_wrapper.styled";
 
 interface IContentWrapperProps {
-  groupType: "main" | "genres" | "specific group";
+  groupType: "main" | "genres" | "specific group" | "search";
 }
 
 export const ContentWrapper: FC<IContentWrapperProps> = ({ groupType }) => {
@@ -48,19 +54,18 @@ export const ContentWrapper: FC<IContentWrapperProps> = ({ groupType }) => {
   const [currentMoviesArr, setCurrentMoviesArr] = useState<Array<IMovie>>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [currentTotalPages, setCurrentTotalPages] = useState<number>(0);
+  const [currentTotalResults, setCurrentTotalResults] = useState<number>(0);
   const handleClick = () => {
     dispatch(getNextPageMovies({ group: currentGroup, page: currentPage }));
   };
+  const handleSearchClick = () => {
+    params.value &&
+      dispatch(
+        getNextPageSearchResults({ value: params.value, page: currentPage }),
+      );
+  };
 
   useEffect(() => {
-    groupType === "main" &&
-      setMainMovieGroupArr(
-        movieGroupArr.filter((item) => item.groupType === "main"),
-      );
-    groupType === "genres" &&
-      setGenreMovieGroupArr(
-        movieGroupArr.filter((item) => item.groupType === "genre"),
-      );
     if (groupType === "specific group" && params.movie_group) {
       const isCurrentGroup = movieGroupArr.find(
         (item) => item.pathTitle === params.movie_group,
@@ -86,100 +91,124 @@ export const ContentWrapper: FC<IContentWrapperProps> = ({ groupType }) => {
     }
   }, [contentState]);
 
+  useEffect(() => {
+    if (groupType === "search" && params.value) {
+      if (
+        contentState.searchResults.results &&
+        contentState.searchResults.page &&
+        contentState.searchResults.total_pages &&
+        contentState.searchResults.total_results
+      ) {
+        setCurrentMoviesArr(contentState.searchResults.results);
+        setCurrentPage(contentState.searchResults.page);
+        setCurrentTotalPages(contentState.searchResults.total_pages);
+        setCurrentTotalResults(contentState.searchResults.total_results);
+      } else {
+        dispatch(getSearchResults({ value: params.value }));
+      }
+    }
+  }, [contentState.searchResults]);
+
+  useEffect(() => {
+    groupType === "main" &&
+      setMainMovieGroupArr(
+        movieGroupArr.filter((item) => item.groupType === "main"),
+      );
+    groupType === "genres" &&
+      setGenreMovieGroupArr(
+        movieGroupArr.filter((item) => item.groupType === "genre"),
+      );
+  }, []);
+
   return (
     <>
       {errorMessage ? (
         <ErrorMessage errorText={errorMessage} />
       ) : (
-        <>
-          {groupType === "specific group" ? (
-            <>
-              <Header />
-              <StyledContainer>
-                <StyledContentWrapper $colors={colors}>
-                  <StyledContentWrapperTitleContainer>
-                    <StyledContentWrapperTitle $colors={colors}>
-                      {currentGroup.title}
-                    </StyledContentWrapperTitle>
-                  </StyledContentWrapperTitleContainer>
-                  <StyledContentWrapperCardsContainer>
-                    {currentMoviesArr.map((item) => (
-                      <Card
-                        key={item.id}
-                        movieId={item.id}
-                        title={item.title}
-                        backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
-                        voteAverage={item.vote_average}
-                        releaseDate={item.release_date}
+        <StyledContainer>
+          <StyledContentWrapper $colors={colors}>
+            <StyledContentWrapperTitleContainer>
+              <StyledContentWrapperTitle $colors={colors}>
+                {groupType === "main" && "Home"}
+                {groupType === "genres" && "Genres"}
+                {groupType === "specific group" && currentGroup.title}
+                {groupType === "search" && "Search Results"}
+              </StyledContentWrapperTitle>
+            </StyledContentWrapperTitleContainer>
+            {(groupType === "specific group" || groupType === "search") && (
+              <>
+                <StyledContentWrapperCardsContainer>
+                  {groupType === "search" && (
+                    <StyledContentWrapperHeaderContainer>
+                      <StyledContentWrapperSearchValue
+                        $colors={colors}
+                      >{`"${params.value}"`}</StyledContentWrapperSearchValue>
+                      <StyledContentWrapperSearchValue
+                        $colors={colors}
+                        $isTotalResults={true}
+                      >{`Found: ${currentTotalResults}`}</StyledContentWrapperSearchValue>
+                    </StyledContentWrapperHeaderContainer>
+                  )}
+                  {currentMoviesArr.map(
+                    (item) =>
+                      item.poster_path && (
+                        <Card
+                          key={item.id}
+                          movieId={item.id}
+                          title={item.title}
+                          backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
+                          voteAverage={item.vote_average}
+                          releaseDate={item.release_date}
+                        />
+                      ),
+                  )}
+                </StyledContentWrapperCardsContainer>
+                {currentTotalPages > 1 && currentTotalPages !== currentPage && (
+                  <>
+                    {!loading ? (
+                      <StyledColorfulButton
+                        $colors={colors}
+                        type="button"
+                        onClick={
+                          groupType === "search"
+                            ? handleSearchClick
+                            : handleClick
+                        }
+                      >
+                        Show More
+                      </StyledColorfulButton>
+                    ) : (
+                      <CircularProgress
+                        size={50}
+                        sx={{ color: colors.colorfulItem }}
                       />
-                    ))}
-                  </StyledContentWrapperCardsContainer>
-                  {currentTotalPages > 1 &&
-                    currentTotalPages !== currentPage && (
-                      <>
-                        {!loading ? (
-                          <StyledColorfulButton
-                            $colors={colors}
-                            type="button"
-                            onClick={handleClick}
-                          >
-                            Show More
-                          </StyledColorfulButton>
-                        ) : (
-                          <CircularProgress
-                            size={50}
-                            sx={{ color: colors.colorfulItem }}
-                          />
-                        )}
-                      </>
                     )}
-                </StyledContentWrapper>
-              </StyledContainer>
-            </>
-          ) : (
-            <StyledContainer>
-              <StyledContentWrapper $colors={colors}>
-                {groupType === "main" && (
-                  <>
-                    <StyledContentWrapperTitleContainer>
-                      <StyledContentWrapperTitle $colors={colors}>
-                        Home
-                      </StyledContentWrapperTitle>
-                    </StyledContentWrapperTitleContainer>
-                    {mainMovieGroupArr.map((item) => (
-                      <Cards
-                        key={item.pathTitle}
-                        currentGroup={item}
-                        currentMoviesArr={
-                          contentState[`${item.camelCaseTitle}Movies`].results
-                        }
-                      />
-                    ))}
                   </>
                 )}
-                {groupType === "genres" && (
-                  <>
-                    <StyledContentWrapperTitleContainer>
-                      <StyledContentWrapperTitle $colors={colors}>
-                        Genres
-                      </StyledContentWrapperTitle>
-                    </StyledContentWrapperTitleContainer>
-
-                    {genreMovieGroupArr.map((item) => (
-                      <Cards
-                        key={item.pathTitle}
-                        currentGroup={item}
-                        currentMoviesArr={
-                          contentState[`${item.camelCaseTitle}Movies`].results
-                        }
-                      />
-                    ))}
-                  </>
-                )}
-              </StyledContentWrapper>
-            </StyledContainer>
-          )}
-        </>
+              </>
+            )}
+            {groupType === "main" &&
+              mainMovieGroupArr.map((item) => (
+                <Cards
+                  key={item.pathTitle}
+                  currentGroup={item}
+                  currentMoviesArr={
+                    contentState[`${item.camelCaseTitle}Movies`].results
+                  }
+                />
+              ))}
+            {groupType === "genres" &&
+              genreMovieGroupArr.map((item) => (
+                <Cards
+                  key={item.pathTitle}
+                  currentGroup={item}
+                  currentMoviesArr={
+                    contentState[`${item.camelCaseTitle}Movies`].results
+                  }
+                />
+              ))}
+          </StyledContentWrapper>
+        </StyledContainer>
       )}
     </>
   );

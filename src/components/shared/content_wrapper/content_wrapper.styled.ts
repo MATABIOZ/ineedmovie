@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { IColorsProps } from "../../../context/color_theme/color_themes";
+import { IColorsProps, Theme } from "../../../context/color_theme/color_themes";
 import { MEDIA_LARGE_LAPTOP, MEDIA_MOBILE } from "../../consts/media_vars";
 
 export const StyledContentWrapper = styled.div<IColorsProps>(({ $colors }) => ({
@@ -13,6 +13,7 @@ export const StyledContentWrapper = styled.div<IColorsProps>(({ $colors }) => ({
   padding: "24px",
   gap: "24px",
   flexWrap: "wrap",
+  minHeight: "78vh",
   [MEDIA_MOBILE]: {
     marginTop: "28px",
     padding: "14px",
@@ -63,3 +64,35 @@ export const StyledContentWrapperTitle = styled.h3<IColorsProps>(
     },
   }),
 );
+
+export const StyledContentWrapperHeaderContainer = styled.div({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
+  paddingBottom: "24px",
+  [MEDIA_MOBILE]: {
+    paddingBottom: "14px",
+  },
+});
+
+interface IStyledContentWrapperSearchValueProps {
+  $colors: Theme;
+  $isTotalResults?: boolean;
+}
+
+export const StyledContentWrapperSearchValue =
+  styled.h3<IStyledContentWrapperSearchValueProps>(
+    ({ $colors, $isTotalResults }) => ({
+      color: $isTotalResults ? $colors.secondaryText : $colors.mainText,
+      fontSize: "38px",
+      fontWeight: 700,
+      lineHeight: "150%",
+      [MEDIA_LARGE_LAPTOP]: {
+        fontSize: "30px",
+      },
+      [MEDIA_MOBILE]: {
+        fontSize: "24px",
+      },
+    }),
+  );
