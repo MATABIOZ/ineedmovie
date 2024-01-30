@@ -11,7 +11,6 @@ import {
 import { IMovie } from "../../../redux/reducers/content_reducer/content_reducer_types";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
 import { IMovieGroup, movieGroupArr } from "../../consts/movie_groups";
-import { Header } from "../../ui/header/header";
 import { StyledColorfulButton } from "../buttons/colorful_button.styled";
 import { Card } from "../card/card";
 import { Cards } from "../cards/cards";
