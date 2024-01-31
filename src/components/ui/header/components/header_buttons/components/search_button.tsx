@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 
@@ -14,6 +15,15 @@ export const SearchButton = () => {
   const { searchIsActive, setSearchIsActive, searchButtonRef } =
     useContext(HeaderContext);
 
+  const [searchButtonDisabled, setSearchButtonDisabled] =
+    useState<boolean>(false);
+
+  const params = useParams();
+
+  useEffect(() => {
+    params.value && setSearchButtonDisabled(true);
+  }, []);
+
   const handleSearchToggle = () => {
     setSearchIsActive(!searchIsActive);
   };
@@ -22,10 +32,16 @@ export const SearchButton = () => {
     <StyledHeaderButton
       type="button"
       $colors={colors}
+      $searchButtonDisabled={searchButtonDisabled}
       onClick={handleSearchToggle}
       ref={searchButtonRef}
+      disabled={searchButtonDisabled}
     >
-      {searchIsActive ? <SearchOffIcon /> : <SearchIcon />}
+      {searchIsActive && !searchButtonDisabled ? (
+        <SearchOffIcon />
+      ) : (
+        <SearchIcon />
+      )}
     </StyledHeaderButton>
   );
 };

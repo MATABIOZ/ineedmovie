@@ -1,5 +1,5 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { ColorThemeContext } from "../../../../../context/color_theme/color_theme_context_provider";
 import { HeaderContext } from "../../../../../context/header_context/header_context_provider";
@@ -21,6 +21,7 @@ export const Search = () => {
 
   const dispatch = useAppDispatch();
 
+  const params = useParams();
   const navigate = useNavigate();
 
   const [value, setValue] = useState<string>("");
@@ -38,14 +39,18 @@ export const Search = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    if (params.value) {
+      setSearchIsActive(true);
+    } else {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
   }, []);
 
   useEffect(() => {
-    searchIsActive && searchInputRef.current?.focus();
+    !params.value && searchIsActive && searchInputRef.current?.focus();
   }, [searchIsActive]);
 
   useEffect(() => {
