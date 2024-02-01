@@ -1,7 +1,8 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 
 import { ColorThemeContext } from "../../../context/color_theme/color_theme_context_provider";
 import { FavoriteButton } from "../buttons/favorite_button/favorite_button";
+import { Department } from "../department/department";
 import { ReleaseDate } from "../release_date/release_date";
 import { VoteAverage } from "../vote_average/vote_average";
 
@@ -14,33 +15,53 @@ import {
 } from "./card.styled";
 
 interface ICardProps {
-  movieId: number;
+  itemId: number;
   title: string;
   backgroundLink: string;
-  voteAverage: number;
-  releaseDate: string;
+  voteAverage?: number;
+  releaseDate?: string;
+  department?: string;
 }
 
 export const Card: FC<ICardProps> = ({
-  movieId,
+  itemId,
   title,
   backgroundLink,
   voteAverage,
   releaseDate,
+  department,
 }) => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
 
+  const [isActiveLink, setIsActiveLink] = useState<boolean>(false);
+
+  const cardLink = `/movie/${itemId}`;
+
+  useEffect(() => {
+    !department && setIsActiveLink(true);
+  }, []);
+
   return (
-    <StyledCardLink to={`/movie/${movieId}`}>
+    <StyledCardLink to={!department ? cardLink : ""} $isActive={isActiveLink}>
       <StyledCardWrapper $colors={colors}>
         <StyledCardPoster $colors={colors} $backgroundLink={backgroundLink}>
-          <FavoriteButton movieId={movieId} />
+          {!department && <FavoriteButton movieId={itemId} />}
         </StyledCardPoster>
         <StyledCardTitle $colors={colors}>{title}</StyledCardTitle>
         <StyledCardInfo>
-          <ReleaseDate releaseDate={releaseDate} />
-          <VoteAverage voteAverage={voteAverage} />
+          {releaseDate && voteAverage && (
+            <>
+              <ReleaseDate releaseDate={releaseDate} />
+              <VoteAverage voteAverage={voteAverage} />
+            </>
+          )}
+          {department && (
+            <>
+              <span></span>
+              <Department department={department} />
+            </>
+          )}
         </StyledCardInfo>
       </StyledCardWrapper>
     </StyledCardLink>

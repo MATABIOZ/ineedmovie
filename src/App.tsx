@@ -12,6 +12,7 @@ import { Header } from "./components/ui/header/header";
 import { Genres } from "./components/ui/main/genres/genres";
 import { Home } from "./components/ui/main/home/home";
 import { SearchResults } from "./components/ui/main/search_results/search_results";
+import { SingleMovie } from "./components/ui/main/single_movie/single_movie";
 import { SpecificGroup } from "./components/ui/main/specific_group/specific_group";
 import { ColorThemeContext } from "./context/color_theme/color_theme_context_provider";
 import {
@@ -42,7 +43,7 @@ function App() {
           <Route path="/genres" element={<Genres />} />
           <Route path="/genres/:movie_group" element={<SpecificGroup />} />
           <Route path="/favorites" element={<Header />} />
-          <Route path="/movie/:movie_id" element={<></>} />
+          <Route path="/movie/:movie_id" element={<SingleMovie />} />
           <Route path="/search/:value" element={<SearchResults />} />
         </Routes>
       </Router>

@@ -53,7 +53,7 @@ export const getSingleMovie = createAsyncThunk<void, number>(
   async (movieId, { dispatch, rejectWithValue }) => {
     try {
       const { data } = await axiosTmdbApiInstance.get<ISingleMovie>(
-        `/movie/${movieId}?append_to_response=videos`,
+        `/movie/${movieId}?append_to_response=credits`,
       );
       dispatch(addSingleMovie(data));
     } catch (error) {

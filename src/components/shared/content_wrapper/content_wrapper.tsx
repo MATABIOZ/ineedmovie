@@ -27,10 +27,14 @@ import {
 } from "./content_wrapper.styled";
 
 interface IContentWrapperProps {
-  groupType: "main" | "genres" | "specific group" | "search";
+  groupType: "main" | "genres" | "specific group" | "search" | "info";
+  children?: React.ReactNode;
 }
 
-export const ContentWrapper: FC<IContentWrapperProps> = ({ groupType }) => {
+export const ContentWrapper: FC<IContentWrapperProps> = ({
+  groupType,
+  children,
+}) => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
 
@@ -132,8 +136,10 @@ export const ContentWrapper: FC<IContentWrapperProps> = ({ groupType }) => {
                 {groupType === "genres" && "Genres"}
                 {groupType === "specific group" && currentGroup.title}
                 {groupType === "search" && "Search Results"}
+                {groupType === "info" && "Info"}
               </StyledContentWrapperTitle>
             </StyledContentWrapperTitleContainer>
+            {children}
             {(groupType === "specific group" || groupType === "search") && (
               <>
                 <StyledContentWrapperCardsContainer>
@@ -153,7 +159,7 @@ export const ContentWrapper: FC<IContentWrapperProps> = ({ groupType }) => {
                       item.poster_path && (
                         <Card
                           key={item.id}
-                          movieId={item.id}
+                          itemId={item.id}
                           title={item.title}
                           backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
                           voteAverage={item.vote_average}

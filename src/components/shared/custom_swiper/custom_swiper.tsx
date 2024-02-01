@@ -13,7 +13,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/scrollbar";
 
 import { ColorThemeContext } from "../../../context/color_theme/color_theme_context_provider";
-import { IMovie } from "../../../redux/reducers/content_reducer/content_reducer_types";
+import {
+  ICast,
+  IMovie,
+} from "../../../redux/reducers/content_reducer/content_reducer_types";
 import { Banner } from "../banner/banner";
 import { Card } from "../card/card";
 
@@ -25,13 +28,15 @@ import {
 import "swiper/css";
 
 interface ICustomSwiperProps {
-  movieArr: Array<IMovie>;
-  swiperFor: "banners" | "cards";
+  moviesArr?: Array<IMovie>;
+  castArr?: Array<ICast>;
+  swiperFor: "banners" | "cardsForMovies" | "cardsForCast";
   swiperClassPostfix: string;
 }
 
 export const CustomSwiper: FC<ICustomSwiperProps> = ({
-  movieArr,
+  moviesArr,
+  castArr,
   swiperFor,
   swiperClassPostfix,
 }) => {
@@ -100,33 +105,48 @@ export const CustomSwiper: FC<ICustomSwiperProps> = ({
         }}
         style={{ overflow: "hidden", width: "100%", gap: "20px" }}
       >
-        {movieArr?.map(
-          (item) =>
-            item.backdrop_path &&
-            item.poster_path && (
-              <SwiperSlide key={item.id}>
-                {swiperFor === "banners" ? (
-                  <Banner
-                    movieId={item.id}
-                    title={item.title}
-                    overview={item.overview}
-                    backgroundLink={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
-                    inSwiper={true}
-                    voteAverage={item.vote_average}
-                    releaseDate={item.release_date}
-                  />
-                ) : (
+        {moviesArr &&
+          moviesArr?.map(
+            (item) =>
+              item.backdrop_path &&
+              item.poster_path && (
+                <SwiperSlide key={item.id}>
+                  {swiperFor === "banners" ? (
+                    <Banner
+                      movieId={item.id}
+                      title={item.title}
+                      overview={item.overview}
+                      backgroundLink={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                      inSwiper={true}
+                      voteAverage={item.vote_average}
+                      releaseDate={item.release_date}
+                    />
+                  ) : (
+                    <Card
+                      itemId={item.id}
+                      title={item.title}
+                      backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
+                      voteAverage={item.vote_average}
+                      releaseDate={item.release_date}
+                    />
+                  )}
+                </SwiperSlide>
+              ),
+          )}
+        {castArr &&
+          castArr?.map(
+            (item) =>
+              item.profile_path && (
+                <SwiperSlide key={item.id}>
                   <Card
-                    movieId={item.id}
-                    title={item.title}
-                    backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
-                    voteAverage={item.vote_average}
-                    releaseDate={item.release_date}
+                    itemId={item.id}
+                    title={item.name}
+                    backgroundLink={`https://image.tmdb.org/t/p/original${item.profile_path}`}
+                    department={item.known_for_department}
                   />
-                )}
-              </SwiperSlide>
-            ),
-        )}
+                </SwiperSlide>
+              ),
+          )}
       </Swiper>
       <StyledSwiperController $colors={colors}>
         <button

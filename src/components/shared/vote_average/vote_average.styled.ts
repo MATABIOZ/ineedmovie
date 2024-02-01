@@ -13,9 +13,6 @@ export const StyledVoteAverage = styled.span.attrs<IStyledVoteAverageProps>(
       background: $colors.itemBackground,
       border: `2px solid ${$ratingBorderColor}`,
       color: $colors.mainText,
-      "& > svg": {
-        color: $colors.mainText,
-      },
     },
   }),
 )({

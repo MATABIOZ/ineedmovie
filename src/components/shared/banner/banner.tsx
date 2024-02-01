@@ -24,7 +24,7 @@ import {
 interface IBannerProps {
   movieId: number;
   title: string;
-  overview: string;
+  overview?: string;
   backgroundLink: string;
   inSwiper: boolean;
   voteAverage: number;
@@ -61,7 +61,7 @@ export const Banner: FC<IBannerProps> = ({
     setShowPlayer(true);
   };
 
-  const handleNavigate = () => {
+  const handleGoToMovie = () => {
     navigate(`/movie/${movieId}`);
   };
 
@@ -71,18 +71,20 @@ export const Banner: FC<IBannerProps> = ({
         <FavoriteButton movieId={movieId} />
         {!showPlayer ? (
           <StyledBannerInfoWrapper>
-            <StyledBannerTitle $colors={colors}>{title}</StyledBannerTitle>
             <StyledBannerInfoInner>
               <ReleaseDate releaseDate={releaseDate} />
               <VoteAverage voteAverage={voteAverage} />
             </StyledBannerInfoInner>
-            <StyledBannerOverview $colors={colors}>
-              {overview}
-            </StyledBannerOverview>
+            <StyledBannerTitle $colors={colors}>{title}</StyledBannerTitle>
+            {inSwiper && overview && (
+              <StyledBannerOverview $colors={colors}>
+                {overview}
+              </StyledBannerOverview>
+            )}
             <StyledColorfulButton
               $colors={colors}
               type="button"
-              onClick={inSwiper ? handleNavigate : handleWatchTrailer}
+              onClick={inSwiper ? handleGoToMovie : handleWatchTrailer}
             >
               {inSwiper ? (
                 <>

@@ -4,7 +4,16 @@ import styled from "styled-components";
 import { IColorsProps, Theme } from "../../../context/color_theme/color_themes";
 import { MEDIA_LARGE_LAPTOP } from "../../consts/media_vars";
 
-export const StyledCardLink = styled(Link)({
+interface IStyledCardLinkProps {
+  $isActive: boolean;
+}
+export const StyledCardLink = styled(Link).attrs<IStyledCardLinkProps>(
+  ({ $isActive }) => ({
+    style: {
+      cursor: $isActive ? "pointer" : "grab",
+    },
+  }),
+)({
   maxWidth: "300px",
   width: "100%",
 });

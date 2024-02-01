@@ -46,8 +46,8 @@ export const Cards: FC<ICardsProps> = ({ currentGroup, currentMoviesArr }) => {
         </StyledCardsShowAllButton>
       </StyledCardsHeaderWrapper>
       <CustomSwiper
-        movieArr={currentMoviesArr}
-        swiperFor={"cards"}
+        moviesArr={currentMoviesArr}
+        swiperFor={"cardsForMovies"}
         swiperClassPostfix={currentGroup.pathTitle}
       />
     </StyledCardsWrapper>

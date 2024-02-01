@@ -20,7 +20,7 @@ export const Home = () => {
         <>
           <Header />
           <CustomSwiper
-            movieArr={popularMovies}
+            moviesArr={popularMovies}
             swiperFor="banners"
             swiperClassPostfix={"banner"}
           />
