@@ -12,8 +12,7 @@ export const SearchButton = () => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
 
-  const { searchIsActive, setSearchIsActive, searchButtonRef } =
-    useContext(HeaderContext);
+  const { searchIsActive, setSearchIsActive } = useContext(HeaderContext);
 
   const [searchButtonDisabled, setSearchButtonDisabled] =
     useState<boolean>(false);
@@ -25,7 +24,9 @@ export const SearchButton = () => {
   }, []);
 
   const handleSearchToggle = () => {
-    setSearchIsActive(!searchIsActive);
+    setTimeout(() => {
+      !searchIsActive && setSearchIsActive(!searchIsActive);
+    });
   };
 
   return (
@@ -34,7 +35,6 @@ export const SearchButton = () => {
       $colors={colors}
       $searchButtonDisabled={searchButtonDisabled}
       onClick={handleSearchToggle}
-      ref={searchButtonRef}
       disabled={searchButtonDisabled}
     >
       {searchIsActive && !searchButtonDisabled ? (

@@ -3,12 +3,13 @@ import React, { FC, RefObject, useRef, useState } from "react";
 type IHeaderContext = {
   searchIsActive: boolean;
   setSearchIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-  searchButtonRef: RefObject<HTMLButtonElement>;
   searchInputRef: RefObject<HTMLInputElement>;
   burgerIsActive: boolean;
   setBurgerIsActive: React.Dispatch<React.SetStateAction<boolean>>;
-  burgerButtonRef: RefObject<HTMLButtonElement>;
   burgerMenuRef: RefObject<HTMLUListElement>;
+  userMenuIsActive: boolean;
+  setUserMenuIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+  userMenuRef: RefObject<HTMLDivElement>;
 };
 
 export const HeaderContext = React.createContext<IHeaderContext>(
@@ -23,26 +24,26 @@ export const HeaderContextProvider: FC<IHeaderContextProviderProps> = ({
   children,
 }) => {
   const [searchIsActive, setSearchIsActive] = useState<boolean>(false);
-
-  const searchButtonRef = useRef<HTMLButtonElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const [burgerIsActive, setBurgerIsActive] = useState<boolean>(false);
-
-  const burgerButtonRef = useRef<HTMLButtonElement>(null);
   const burgerMenuRef = useRef<HTMLUListElement>(null);
+
+  const [userMenuIsActive, setUserMenuIsActive] = useState<boolean>(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   return (
     <HeaderContext.Provider
       value={{
         searchIsActive: searchIsActive,
         setSearchIsActive: setSearchIsActive,
-        searchButtonRef: searchButtonRef,
         searchInputRef: searchInputRef,
         burgerIsActive: burgerIsActive,
         setBurgerIsActive: setBurgerIsActive,
-        burgerButtonRef: burgerButtonRef,
         burgerMenuRef: burgerMenuRef,
+        userMenuIsActive: userMenuIsActive,
+        setUserMenuIsActive: setUserMenuIsActive,
+        userMenuRef: userMenuRef,
       }}
     >
       {children}

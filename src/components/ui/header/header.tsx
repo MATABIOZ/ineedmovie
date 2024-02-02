@@ -10,6 +10,7 @@ import { StyledHeader, StyledHeaderWrapper } from "./components/header.styled";
 import { HeaderButtons } from "./components/header_buttons/header_buttons";
 import { NavBar } from "./components/nav_bar/nav_bar";
 import { Search } from "./components/search/search";
+import { UserMenu } from "./components/user_menu/user_menu";
 
 export const Header = () => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
@@ -28,6 +29,7 @@ export const Header = () => {
       </StyledHeader>
       <Search />
       <BurgerMenu />
+      <UserMenu />
     </HeaderContextProvider>
   );
 };

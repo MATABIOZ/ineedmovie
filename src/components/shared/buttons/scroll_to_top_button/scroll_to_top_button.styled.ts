@@ -14,7 +14,7 @@ export const StyledScrollToTopButton =
     justifyContent: "center",
     padding: "4px",
     margin: 0,
-    background: $colors.itemBackground,
+    background: $colors.colorfulItem,
     border: `1px solid ${$colors.thinBorder}`,
     borderTopLeftRadius: "8px",
     position: "fixed",

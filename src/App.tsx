@@ -8,6 +8,7 @@ import {
 
 import { movieGroupArr } from "./components/consts/movie_groups";
 import { ScrollToTopButton } from "./components/shared/buttons/scroll_to_top_button/scroll_to_top_button";
+import { AuthorisationForm } from "./components/ui/authorisation/authorisation_form";
 import { Header } from "./components/ui/header/header";
 import { Genres } from "./components/ui/main/genres/genres";
 import { Home } from "./components/ui/main/home/home";
@@ -45,6 +46,14 @@ function App() {
           <Route path="/favorites" element={<Header />} />
           <Route path="/movie/:movie_id" element={<SingleMovie />} />
           <Route path="/search/:value" element={<SearchResults />} />
+          <Route
+            path="/authorisation/sign_up"
+            element={<AuthorisationForm formFor={"sign_up"} />}
+          />
+          <Route
+            path="/authorisation/sign_in"
+            element={<AuthorisationForm formFor={"sign_in"} />}
+          />
         </Routes>
       </Router>
       <ScrollToTopButton />

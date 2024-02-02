@@ -14,6 +14,7 @@ interface IStyledHeaderButtonProps {
 export const StyledHeaderButton = styled.button<IStyledHeaderButtonProps>(
   ({ $colors, $searchButtonDisabled }) => ({
     opacity: $searchButtonDisabled ? 0.5 : 1,
+    cursor: $searchButtonDisabled ? "default" : "pointer",
     "& > svg": {
       color: $colors.mainText,
       fontSize: 34,

@@ -11,11 +11,12 @@ export const BurgerButton = () => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
 
-  const { burgerIsActive, setBurgerIsActive, burgerButtonRef } =
-    useContext(HeaderContext);
+  const { burgerIsActive, setBurgerIsActive } = useContext(HeaderContext);
 
   const handleBurgerToggle = () => {
-    setBurgerIsActive(!burgerIsActive);
+    setTimeout(() => {
+      !burgerIsActive && setBurgerIsActive(!burgerIsActive);
+    });
   };
 
   return (
@@ -23,7 +24,6 @@ export const BurgerButton = () => {
       type="button"
       $colors={colors}
       onClick={handleBurgerToggle}
-      ref={burgerButtonRef}
     >
       {burgerIsActive ? <MenuOpenIcon /> : <MenuIcon />}
     </StyledBurgerButton>
