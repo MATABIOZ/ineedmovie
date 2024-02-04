@@ -16,7 +16,7 @@ export const ReleaseDate: FC<IReleaseDateProps> = ({ releaseDate }) => {
   return (
     <StyledReleaseDate $colors={colors}>
       <EventIcon />
-      {releaseDate}
+      {releaseDate.substring(0, 4)}
     </StyledReleaseDate>
   );
 };

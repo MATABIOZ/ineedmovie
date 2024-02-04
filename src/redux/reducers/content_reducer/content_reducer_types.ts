@@ -160,6 +160,7 @@ export interface IInitialContentState {
   singleMovie: ISingleMovie;
   genres: IGenres;
   videos: Array<IVideos>;
+  favoriteMovies: Array<ISingleMovie>;
   loading: boolean;
   errorMessage: string;
   popularMovies: IMovieList;

@@ -76,13 +76,13 @@ export const StyledContentWrapperHeaderContainer = styled.div({
   },
 });
 
-interface IStyledContentWrapperSearchValueProps {
+interface IStyledContentWrapperHeaderItemProps {
   $colors: Theme;
   $isTotalResults?: boolean;
 }
 
-export const StyledContentWrapperSearchValue =
-  styled.h3<IStyledContentWrapperSearchValueProps>(
+export const StyledContentWrapperHeaderItem =
+  styled.h3<IStyledContentWrapperHeaderItemProps>(
     ({ $colors, $isTotalResults }) => ({
       color: $isTotalResults ? $colors.secondaryText : $colors.mainText,
       fontSize: "38px",

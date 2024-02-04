@@ -29,7 +29,7 @@ export const StyledBurgerMenuWrapper = styled.ul<IColorsProps>(
     border: `1px solid ${$colors.thickBorder}`,
     borderRadius: 12,
     background: $colors.itemBackground,
-    gap: 6,
+    gap: "14px",
     maxWidth: 300,
     flex: 1,
   }),
@@ -38,22 +38,29 @@ export const StyledBurgerMenuWrapper = styled.ul<IColorsProps>(
 interface IStyledBurgerMenuNavLinkProps {
   $colors: Theme;
   $isactive: boolean;
+  $isFavorites: boolean;
+  $favoritesIsUnlock: boolean;
 }
 
 export const StyledBurgerMenuNavLink = styled(
   NavLink,
-)<IStyledBurgerMenuNavLinkProps>(({ $colors, $isactive }) => ({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "12px 16px",
-  borderRadius: 8,
-  backgroundColor: $isactive
-    ? $colors.activeItemBackground
-    : $colors.itemBackground,
-  fontSize: 18,
-  lineHeight: "25px",
-  fontWeight: 400,
-  color: $isactive ? $colors.mainText : $colors.secondaryText,
-  minWidth: 200,
-}));
+)<IStyledBurgerMenuNavLinkProps>(
+  ({ $colors, $isactive, $isFavorites, $favoritesIsUnlock }) => ({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "12px 16px",
+    border: $isFavorites ? `1px solid ${$colors.thinBorder}` : "none",
+    borderRadius: 8,
+    backgroundColor: $isactive
+      ? $colors.activeItemBackground
+      : $colors.itemBackground,
+    fontSize: 18,
+    lineHeight: "25px",
+    fontWeight: 400,
+    color: $isactive ? $colors.mainText : $colors.secondaryText,
+    minWidth: 200,
+    cursor: $isFavorites && !$favoritesIsUnlock ? "no-drop" : "pointer",
+    opacity: $isFavorites && !$favoritesIsUnlock ? 0.5 : 1,
+  }),
+);

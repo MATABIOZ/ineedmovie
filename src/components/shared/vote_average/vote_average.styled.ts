@@ -19,10 +19,10 @@ export const StyledVoteAverage = styled.span.attrs<IStyledVoteAverageProps>(
   display: "flex",
   alignItems: "center",
   padding: "6px",
-
   borderRadius: "8px",
   fontSize: "16px",
   fontWeight: 500,
+  gap: "2px",
   "& > svg": {
     fontSize: "18px",
   },

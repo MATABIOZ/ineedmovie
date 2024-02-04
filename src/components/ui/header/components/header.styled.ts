@@ -21,4 +21,7 @@ export const StyledHeaderWrapper = styled.div({
   "& > *": {
     flex: "1",
   },
+  [MEDIA_MOBILE]: {
+    flexDirection: "column",
+  },
 });

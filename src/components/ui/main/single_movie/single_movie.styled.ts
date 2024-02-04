@@ -63,6 +63,7 @@ export const StyledMovieItemsWrapper = styled.p({
   flexWrap: "wrap",
   gap: "16px",
   alignItems: "center",
+  wordWrap: "break-word",
 });
 
 export const StyledMovieItem = styled.span.attrs<IColorsProps>(
@@ -80,6 +81,8 @@ export const StyledMovieItem = styled.span.attrs<IColorsProps>(
   borderRadius: "8px",
   fontSize: "16px",
   fontWeight: 500,
+  wordBreak: "break-word",
+  textAlign: "center",
 });
 
 export const StyledMovieCastSwiperContainer = styled.div({

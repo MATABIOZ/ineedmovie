@@ -9,7 +9,7 @@ import {
 import { movieGroupArr } from "./components/consts/movie_groups";
 import { ScrollToTopButton } from "./components/shared/buttons/scroll_to_top_button/scroll_to_top_button";
 import { AuthorisationForm } from "./components/ui/authorisation/authorisation_form";
-import { Header } from "./components/ui/header/header";
+import { FavoriteMovies } from "./components/ui/main/favorite_movies/favorite_movies";
 import { Genres } from "./components/ui/main/genres/genres";
 import { Home } from "./components/ui/main/home/home";
 import { SearchResults } from "./components/ui/main/search_results/search_results";
@@ -41,8 +41,8 @@ function App() {
   const user = useAppSelector((state) => state.appAuthReducer.user);
 
   useEffect(() => {
-    user && setThemeType(user.theme);
-  }, [user]);
+    user?.theme && setThemeType(user.theme);
+  }, [user?.theme]);
 
   return (
     <StyledApp className="App" $colors={colors}>
@@ -53,7 +53,7 @@ function App() {
           <Route path="/home/:movie_group" element={<SpecificGroup />} />
           <Route path="/genres" element={<Genres />} />
           <Route path="/genres/:movie_group" element={<SpecificGroup />} />
-          <Route path="/favorites" element={<Header />} />
+          <Route path="/favorites" element={<FavoriteMovies />} />
           <Route path="/movie/:movie_id" element={<SingleMovie />} />
           <Route path="/search/:value" element={<SearchResults />} />
           <Route

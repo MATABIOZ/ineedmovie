@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 import { IColorsProps } from "../../../../../context/color_theme/color_themes";
-import { MEDIA_LARGE_LAPTOP } from "../../../../consts/media_vars";
+import {
+  MEDIA_LAPTOP,
+  MEDIA_LARGE_LAPTOP,
+} from "../../../../consts/media_vars";
 
 export const StyledSearchWrapper = styled.form({
   display: "flex",
@@ -32,6 +35,9 @@ export const StyledSearch = styled.input<IColorsProps>(({ $colors }) => ({
     padding: "8px 22px",
     maxWidth: 404,
   },
+  [MEDIA_LAPTOP]: {
+    maxWidth: 300,
+  },
 }));
 
 export const StyledSearchMessage = styled.p<IColorsProps>(({ $colors }) => ({
@@ -49,5 +55,8 @@ export const StyledSearchMessage = styled.p<IColorsProps>(({ $colors }) => ({
     padding: "2px 22px",
     maxWidth: 404,
     fontSize: 14,
+  },
+  [MEDIA_LAPTOP]: {
+    maxWidth: 300,
   },
 }));

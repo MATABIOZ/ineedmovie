@@ -126,7 +126,7 @@ export const switchUserTheme = createAsyncThunk<void, IUser>(
 );
 
 export const deleteUser = createAsyncThunk<void, { id: number; login: string }>(
-  "auth/toggleUserTheme",
+  "auth/deleteUser",
   async (params, { dispatch, rejectWithValue }) => {
     try {
       await axiosMockapiInstance.delete(`/users/${params.id}`);
@@ -135,6 +135,41 @@ export const deleteUser = createAsyncThunk<void, { id: number; login: string }>(
       );
       dispatch(clearUser());
       alert(`User "${params.login}" has been successfully deleted.`);
+    } catch (error) {
+      error instanceof AxiosError &&
+        error.response &&
+        rejectWithValue(
+          `${error.response.status}(${error.response.statusText})`,
+        );
+    }
+  },
+);
+
+export const changeArrFavoriteMovies = createAsyncThunk<
+  void,
+  { user: IUser; movieId: number }
+>(
+  "auth/changeArrFavoriteMovies",
+  async (params, { dispatch, rejectWithValue }) => {
+    try {
+      const movieId = params.movieId;
+      const user = params.user;
+      let newFavoriteMoviesArr: Array<number> = [];
+      if (user.favoriteMovies.indexOf(movieId) === -1) {
+        newFavoriteMoviesArr = [...user.favoriteMovies, movieId];
+        console.log(`Add to new favorite movie "${movieId}".`);
+      } else {
+        newFavoriteMoviesArr = user.favoriteMovies.filter(
+          (item) => item !== movieId,
+        );
+        console.log(`Delete movie "${movieId}" from favorite movies.`);
+      }
+      const updatedUser: IUser = {
+        ...user,
+        favoriteMovies: newFavoriteMoviesArr,
+      };
+      dispatch(addModifiedArrFavoriteMovies(newFavoriteMoviesArr));
+      await axiosMockapiInstance.put(`/users/${user.id}`, updatedUser);
     } catch (error) {
       error instanceof AxiosError &&
         error.response &&
@@ -164,6 +199,12 @@ export const appAuthSlice = createSlice({
     },
     switchTheme: (state, action: PayloadAction<ThemeType>) => {
       (state.user as IUser).theme = action.payload;
+    },
+    addModifiedArrFavoriteMovies: (
+      state,
+      action: PayloadAction<Array<number>>,
+    ) => {
+      (state.user as IUser).favoriteMovies = action.payload;
     },
   },
   extraReducers: (builder) =>
@@ -211,10 +252,26 @@ export const appAuthSlice = createSlice({
       .addCase(switchUserTheme.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = `${action.payload}`;
+      })
+      .addCase(changeArrFavoriteMovies.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = "";
+      })
+      .addCase(changeArrFavoriteMovies.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(changeArrFavoriteMovies.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = `${action.payload}`;
       }),
 });
 
-export const { addUser, addUsersLoginsAndEmails, clearUser, switchTheme } =
-  appAuthSlice.actions;
+export const {
+  addUser,
+  addUsersLoginsAndEmails,
+  clearUser,
+  switchTheme,
+  addModifiedArrFavoriteMovies,
+} = appAuthSlice.actions;
 
 export const appAuthReducer = appAuthSlice.reducer;

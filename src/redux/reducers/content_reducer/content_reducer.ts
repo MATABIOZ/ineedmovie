@@ -20,6 +20,7 @@ const initialContentState: IInitialContentState = {
   singleMovie: {} as ISingleMovie,
   genres: {} as IGenres,
   videos: [],
+  favoriteMovies: [],
   loading: false,
   errorMessage: "",
   popularMovies: {} as IMovieList,
@@ -91,6 +92,28 @@ export const getVideos = createAsyncThunk<void, number>(
         `/movie/${movieId}/videos?`,
       );
       dispatch(addVideos(data));
+    } catch (error) {
+      error instanceof AxiosError &&
+        error.response &&
+        rejectWithValue(
+          `${error.response.status}(${error.response.statusText})`,
+        );
+    }
+  },
+);
+
+export const getFavoriteMovies = createAsyncThunk<void, Array<number>>(
+  "content/getFavoriteMovies",
+  async (favoriteMoviesIdArr, { dispatch, rejectWithValue }) => {
+    try {
+      const moviesArr = [];
+      for (const movieId of favoriteMoviesIdArr) {
+        const { data } = await axiosTmdbApiInstance.get<ISingleMovie>(
+          `/movie/${movieId}?append_to_response=credits`,
+        );
+        moviesArr.push(data);
+      }
+      dispatch(addFavoriteMovies(moviesArr));
     } catch (error) {
       error instanceof AxiosError &&
         error.response &&
@@ -210,6 +233,9 @@ export const appContentSlice = createSlice({
     addVideos: (state, action: PayloadAction<IVideos>) => {
       state.videos.push(action.payload);
     },
+    addFavoriteMovies: (state, action: PayloadAction<Array<ISingleMovie>>) => {
+      state.favoriteMovies = action.payload;
+    },
     addMovies: (
       state,
       action: PayloadAction<{
@@ -321,6 +347,7 @@ export const {
   addNextPageMovies,
   addSearchResults,
   addNextPageSearchResults,
+  addFavoriteMovies,
 } = appContentSlice.actions;
 
 export const appContentReducer = appContentSlice.reducer;

@@ -1,8 +1,11 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 
 import { ColorThemeContext } from "../../../../../context/color_theme/color_theme_context_provider";
 import { HeaderContext } from "../../../../../context/header_context/header_context_provider";
+import { useAppSelector } from "../../../../../redux/store/store";
 
 import {
   StyledBurgerMenu,
@@ -17,6 +20,14 @@ export const BurgerMenu = () => {
   const { pathname } = useLocation();
 
   const burgerNavLinkTitlesArr = ["Home", "Genres", "Favorites"];
+
+  const user = useAppSelector((state) => state.appAuthReducer.user);
+
+  const [favoritesIsUnlock, setFavoritesIsUnlock] = useState<boolean>(false);
+
+  useEffect(() => {
+    user ? setFavoritesIsUnlock(true) : setFavoritesIsUnlock(false);
+  }, [user]);
 
   const { burgerIsActive, setBurgerIsActive, burgerMenuRef } =
     useContext(HeaderContext);
@@ -41,13 +52,31 @@ export const BurgerMenu = () => {
             {burgerNavLinkTitlesArr.map((item) => (
               <li key={burgerNavLinkTitlesArr.indexOf(item)}>
                 <StyledBurgerMenuNavLink
-                  to={`/${item.toLowerCase()}`}
+                  to={
+                    item === "Favorites" && !favoritesIsUnlock
+                      ? ""
+                      : `/${item.toLowerCase()}`
+                  }
                   $colors={colors}
                   $isactive={
                     pathname === `/${item.toLowerCase()}` ? true : false
                   }
+                  $isFavorites={item === "Favorites" ? true : false}
+                  $favoritesIsUnlock={favoritesIsUnlock}
                 >
-                  {item}
+                  {item === "Favorites" && favoritesIsUnlock ? (
+                    <>
+                      {item}
+                      <LockOpenIcon />
+                    </>
+                  ) : item === "Favorites" && !favoritesIsUnlock ? (
+                    <>
+                      {item}
+                      <LockPersonIcon />
+                    </>
+                  ) : (
+                    item
+                  )}
                 </StyledBurgerMenuNavLink>
               </li>
             ))}

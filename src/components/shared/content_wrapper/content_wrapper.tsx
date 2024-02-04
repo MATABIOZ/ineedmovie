@@ -1,9 +1,10 @@
 import { FC, useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 
 import { ColorThemeContext } from "../../../context/color_theme/color_theme_context_provider";
 import {
+  getFavoriteMovies,
   getNextPageMovies,
   getNextPageSearchResults,
   getSearchResults,
@@ -21,13 +22,19 @@ import {
   StyledContentWrapper,
   StyledContentWrapperCardsContainer,
   StyledContentWrapperHeaderContainer,
-  StyledContentWrapperSearchValue,
+  StyledContentWrapperHeaderItem,
   StyledContentWrapperTitle,
   StyledContentWrapperTitleContainer,
 } from "./content_wrapper.styled";
 
 interface IContentWrapperProps {
-  groupType: "main" | "genres" | "specific group" | "search" | "info";
+  groupType:
+    | "main"
+    | "genres"
+    | "specific group"
+    | "search"
+    | "info"
+    | "favorites";
   children?: React.ReactNode;
 }
 
@@ -41,7 +48,12 @@ export const ContentWrapper: FC<IContentWrapperProps> = ({
   const contentState = useAppSelector((state) => state.appContentReducer);
   const loading = contentState.loading;
   const errorMessage = contentState.errorMessage;
+
+  const user = useAppSelector((state) => state.appAuthReducer.user);
+
   const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const params = useParams();
 
@@ -113,6 +125,20 @@ export const ContentWrapper: FC<IContentWrapperProps> = ({
   }, [contentState.searchResults]);
 
   useEffect(() => {
+    if (
+      groupType === "favorites" &&
+      user?.favoriteMovies &&
+      user.favoriteMovies.length > 0
+    ) {
+      dispatch(getFavoriteMovies(user.favoriteMovies));
+    }
+  }, [user?.favoriteMovies]);
+
+  useEffect(() => {
+    groupType === "favorites" && !user && navigate("/home");
+  }, [user]);
+
+  useEffect(() => {
     groupType === "main" &&
       setMainMovieGroupArr(
         movieGroupArr.filter((item) => item.groupType === "main"),
@@ -137,36 +163,61 @@ export const ContentWrapper: FC<IContentWrapperProps> = ({
                 {groupType === "specific group" && currentGroup.title}
                 {groupType === "search" && "Search Results"}
                 {groupType === "info" && "Info"}
+                {groupType === "favorites" && "Favorites"}
               </StyledContentWrapperTitle>
             </StyledContentWrapperTitleContainer>
             {children}
-            {(groupType === "specific group" || groupType === "search") && (
+            {(groupType === "specific group" ||
+              groupType === "search" ||
+              groupType === "favorites") && (
               <>
                 <StyledContentWrapperCardsContainer>
                   {groupType === "search" && (
                     <StyledContentWrapperHeaderContainer>
-                      <StyledContentWrapperSearchValue
+                      <StyledContentWrapperHeaderItem
                         $colors={colors}
-                      >{`"${params.value}"`}</StyledContentWrapperSearchValue>
-                      <StyledContentWrapperSearchValue
+                      >{`"${params.value}"`}</StyledContentWrapperHeaderItem>
+                      <StyledContentWrapperHeaderItem
                         $colors={colors}
                         $isTotalResults={true}
-                      >{`Found: ${currentTotalResults}`}</StyledContentWrapperSearchValue>
+                      >{`Found: ${currentTotalResults}`}</StyledContentWrapperHeaderItem>
                     </StyledContentWrapperHeaderContainer>
                   )}
-                  {currentMoviesArr.map(
-                    (item) =>
-                      item.poster_path && (
-                        <Card
-                          key={item.id}
-                          itemId={item.id}
-                          title={item.title}
-                          backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
-                          voteAverage={item.vote_average}
-                          releaseDate={item.release_date}
-                        />
-                      ),
+                  {groupType === "favorites" && (
+                    <StyledContentWrapperHeaderContainer>
+                      <StyledContentWrapperHeaderItem
+                        $colors={colors}
+                      >{`Movies: ${contentState.favoriteMovies.length}`}</StyledContentWrapperHeaderItem>
+                    </StyledContentWrapperHeaderContainer>
                   )}
+                  {(groupType === "specific group" || groupType === "search") &&
+                    currentMoviesArr.map(
+                      (item) =>
+                        item.poster_path && (
+                          <Card
+                            key={item.id}
+                            itemId={item.id}
+                            title={item.title}
+                            backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
+                            voteAverage={item.vote_average}
+                            releaseDate={item.release_date}
+                          />
+                        ),
+                    )}
+                  {groupType === "favorites" &&
+                    contentState.favoriteMovies.map(
+                      (item) =>
+                        item.poster_path && (
+                          <Card
+                            key={item.id}
+                            itemId={item.id}
+                            title={item.title}
+                            backgroundLink={`https://image.tmdb.org/t/p/original${item.poster_path}`}
+                            voteAverage={item.vote_average}
+                            releaseDate={item.release_date}
+                          />
+                        ),
+                    )}
                 </StyledContentWrapperCardsContainer>
                 {currentTotalPages > 1 && currentTotalPages !== currentPage && (
                   <>

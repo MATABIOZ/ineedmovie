@@ -25,7 +25,7 @@ export const StyledNavBarWrapper = styled.ul<IColorsProps>(({ $colors }) => ({
   border: `4px solid ${$colors.thickBorder}`,
   borderRadius: 12,
   background: $colors.itemBackground,
-  gap: 6,
+  gap: "14px",
   [MEDIA_LARGE_LAPTOP]: {
     padding: "8px 22px",
     border: `3px solid ${$colors.thickBorder}`,
@@ -35,15 +35,17 @@ export const StyledNavBarWrapper = styled.ul<IColorsProps>(({ $colors }) => ({
 interface IStyledNavLinkProps {
   $colors: Theme;
   $isactive: boolean;
+  $isFavorites: boolean;
+  $favoritesIsUnlock: boolean;
 }
 
 export const StyledNavLink = styled(NavLink)<IStyledNavLinkProps>(
-  ({ $colors, $isactive }) => ({
+  ({ $colors, $isactive, $isFavorites, $favoritesIsUnlock }) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: $isactive ? "15px 24px" : "15px",
-    margin: $isactive ? "0 15px" : "0",
+    padding: "15px 24px",
+    border: $isFavorites ? `1px solid ${$colors.thinBorder}` : "none",
     borderRadius: 8,
     backgroundColor: $isactive
       ? $colors.activeItemBackground
@@ -52,9 +54,10 @@ export const StyledNavLink = styled(NavLink)<IStyledNavLinkProps>(
     lineHeight: "25px",
     fontWeight: $isactive ? 500 : 400,
     color: $isactive ? $colors.mainText : $colors.secondaryText,
+    cursor: $isFavorites && !$favoritesIsUnlock ? "no-drop" : "pointer",
+    opacity: $isFavorites && !$favoritesIsUnlock ? 0.5 : 1,
     [MEDIA_LARGE_LAPTOP]: {
-      padding: $isactive ? "12px 16px" : "12px 8px",
-      margin: $isactive ? "0 8px" : "0",
+      padding: "12px 16px",
     },
   }),
 );
