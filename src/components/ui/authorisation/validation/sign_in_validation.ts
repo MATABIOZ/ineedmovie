@@ -7,7 +7,7 @@ export const signInValidation = Yup.object().shape({
   password: Yup.string().required("Password is a required field."),
 });
 
-interface ISignInInitialValuesType {
+export interface ISignInInitialValuesType {
   email: string;
   password: string;
 }

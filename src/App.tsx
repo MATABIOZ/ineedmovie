@@ -16,23 +16,33 @@ import { SearchResults } from "./components/ui/main/search_results/search_result
 import { SingleMovie } from "./components/ui/main/single_movie/single_movie";
 import { SpecificGroup } from "./components/ui/main/specific_group/specific_group";
 import { ColorThemeContext } from "./context/color_theme/color_theme_context_provider";
+import { authentificationUser } from "./redux/reducers/auth_reducer/auth_reducer";
 import {
   getGenres,
   getMovies,
 } from "./redux/reducers/content_reducer/content_reducer";
-import { useAppDispatch } from "./redux/store/store";
+import { useAppDispatch, useAppSelector } from "./redux/store/store";
 import { StyledApp } from "./App.styled";
 
 function App() {
-  const { getTheme, themeType } = useContext(ColorThemeContext);
+  const { getTheme, themeType, setThemeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
 
   const dispatch = useAppDispatch();
 
+  const token: string | null = localStorage.getItem("token");
+
   useEffect(() => {
     dispatch(getGenres());
     dispatch(getMovies(movieGroupArr));
+    token && dispatch(authentificationUser({ token: token }));
   }, []);
+
+  const user = useAppSelector((state) => state.appAuthReducer.user);
+
+  useEffect(() => {
+    user && setThemeType(user.theme);
+  }, [user]);
 
   return (
     <StyledApp className="App" $colors={colors}>

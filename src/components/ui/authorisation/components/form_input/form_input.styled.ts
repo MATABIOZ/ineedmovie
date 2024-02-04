@@ -7,14 +7,14 @@ import {
 } from "../../../../../context/color_theme/color_themes";
 import { MEDIA_MOBILE } from "../../../../consts/media_vars";
 
-export const StyledInputContainer = styled.div<IColorsProps>(({ $colors }) => ({
+export const StyledInputContainer = styled.div<IColorsProps>({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-end",
   position: "relative",
   maxWidth: "600px",
   width: "100%",
-}));
+});
 
 interface IStyledInputProps {
   $inputId: "login" | "email" | "password" | "confirm_password";

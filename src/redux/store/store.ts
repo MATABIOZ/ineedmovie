@@ -3,8 +3,10 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { appContentReducer } from "../reducers/content_reducer/content_reducer";
 
+import { appAuthReducer } from "./../reducers/auth_reducer/auth_reducer";
+
 export const store = configureStore({
-  reducer: { appContentReducer },
+  reducer: { appContentReducer, appAuthReducer },
 });
 
 export type StoreType = ReturnType<typeof store.getState>;

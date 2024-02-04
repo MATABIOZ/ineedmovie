@@ -1,7 +1,15 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 
 import { ColorThemeContext } from "../../../context/color_theme/color_theme_context_provider";
+import {
+  authentificationUser,
+  createUser,
+  getUsersLoginsAndEmails,
+} from "../../../redux/reducers/auth_reducer/auth_reducer";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/store";
+import { generateToken } from "../../utils/generate_token";
 
 import { FormButtons } from "./components/form_buttons/from_buttons";
 import { FormHeader } from "./components/form_header/form_header";
@@ -9,10 +17,12 @@ import { FormInput } from "./components/form_input/form_input";
 import { FormLabelTitle } from "./components/form_label_title/form_label_title";
 import { FormMainTitle } from "./components/form_main_title/form_main_title";
 import {
+  ISignInInitialValuesType,
   signInInitialValues,
   signInValidation,
 } from "./validation/sign_in_validation";
 import {
+  ISignUpInitialValuesType,
   signUpInitialValues,
   signUpValidation,
 } from "./validation/sign_up_validation";
@@ -26,6 +36,44 @@ export const AuthorisationForm: FC<IAuthorisationFormProps> = ({ formFor }) => {
   const { getTheme, themeType } = useContext(ColorThemeContext);
   const colors = getTheme(themeType);
 
+  const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
+  const usersLoginsAndEmails = useAppSelector(
+    (state) => state.appAuthReducer.usersLoginsAndEmails,
+  );
+
+  useEffect(() => {
+    dispatch(getUsersLoginsAndEmails());
+  }, []);
+
+  const user = useAppSelector((state) => state.appAuthReducer.user);
+  useEffect(() => {
+    user && navigate("/home");
+  }, [user]);
+
+  const handleSignUpSubmit = (values: ISignUpInitialValuesType) => {
+    dispatch(
+      createUser({
+        login: values.login,
+        email: values.email,
+        password: values.password,
+        token: generateToken(32),
+        favoriteMovies: [],
+        theme: themeType,
+      }),
+    );
+  };
+  const handleSignInSubmit = (values: ISignInInitialValuesType) => {
+    dispatch(
+      authentificationUser({
+        email: values.email,
+        password: values.password,
+      }),
+    );
+  };
+
   return (
     <StyledFormContainer>
       <Formik
@@ -33,15 +81,18 @@ export const AuthorisationForm: FC<IAuthorisationFormProps> = ({ formFor }) => {
           formFor === "sign_up" ? signUpInitialValues : signInInitialValues
         }
         validationSchema={
-          formFor === "sign_up" ? signUpValidation : signInValidation
+          formFor === "sign_up"
+            ? signUpValidation(usersLoginsAndEmails)
+            : signInValidation
         }
-        onSubmit={(values, { resetForm, setSubmitting }) => {
-          console.log("Data sending...");
-          setTimeout(() => {
-            console.log("Data sended:");
-            console.log(values);
-          }, 1000);
-          resetForm();
+        onSubmit={(
+          values: ISignUpInitialValuesType | ISignInInitialValuesType,
+          { setSubmitting },
+        ) => {
+          formFor === "sign_up" &&
+            handleSignUpSubmit(values as ISignUpInitialValuesType);
+          formFor === "sign_in" &&
+            handleSignInSubmit(values as ISignInInitialValuesType);
           setSubmitting(false);
         }}
       >

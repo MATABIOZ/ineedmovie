@@ -1,6 +1,9 @@
 import { styled } from "styled-components";
 
-import { IColorsProps } from "../../../../../context/color_theme/color_themes";
+import {
+  IColorsProps,
+  Theme,
+} from "../../../../../context/color_theme/color_themes";
 import {
   MEDIA_LARGE_LAPTOP,
   MEDIA_MOBILE,
@@ -34,7 +37,7 @@ export const StyledUserMenuWrapper = styled.div<IColorsProps>(
   }),
 );
 
-export const StyledUserMenuNavButton = styled.button<IColorsProps>(
+export const StyledUserMenuActionButton = styled.button<IColorsProps>(
   ({ $colors }) => ({
     display: "flex",
     justifyContent: "center",
@@ -48,11 +51,48 @@ export const StyledUserMenuNavButton = styled.button<IColorsProps>(
     color: $colors.mainText,
     textAlign: "center",
     minWidth: "150px",
-    [MEDIA_LARGE_LAPTOP]: {
-      fontSize: "20px",
-    },
     [MEDIA_MOBILE]: {
       fontSize: "15px",
+    },
+  }),
+);
+
+interface IStyledUserMenuLoginProps {
+  $colors: Theme;
+  $textColor: string;
+}
+
+export const StyledUserMenuLogin = styled.h3<IStyledUserMenuLoginProps>(
+  ({ $colors, $textColor }) => ({
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: $colors.mainBackground,
+    border: `1px solid ${$colors.thinBorder}`,
+    borderRadius: "8px",
+    padding: "12px 24px",
+    fontFamily: "Sora",
+    fontWeight: 700,
+    fontSize: "30px",
+    color: $textColor,
+    textAlign: "center",
+    width: "100%",
+    gap: "4px",
+    marginBottom: "14px",
+    "& > svg": {
+      fontSize: "30px",
+    },
+    [MEDIA_LARGE_LAPTOP]: {
+      fontSize: "25px",
+      "& > svg": {
+        fontSize: "25px",
+      },
+    },
+    [MEDIA_MOBILE]: {
+      fontSize: "20px",
+      "& > svg": {
+        fontSize: "20px",
+      },
     },
   }),
 );

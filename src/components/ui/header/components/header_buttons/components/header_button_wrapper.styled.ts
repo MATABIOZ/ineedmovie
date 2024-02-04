@@ -9,14 +9,16 @@ import {
 interface IStyledHeaderButtonProps {
   $colors: Theme;
   $searchButtonDisabled?: boolean;
+  $isUserButton?: boolean;
+  $isUser?: boolean;
 }
 
 export const StyledHeaderButton = styled.button<IStyledHeaderButtonProps>(
-  ({ $colors, $searchButtonDisabled }) => ({
+  ({ $colors, $searchButtonDisabled, $isUserButton, $isUser }) => ({
     opacity: $searchButtonDisabled ? 0.5 : 1,
     cursor: $searchButtonDisabled ? "default" : "pointer",
     "& > svg": {
-      color: $colors.mainText,
+      color: $isUserButton && $isUser ? "#4CAF50" : $colors.mainText,
       fontSize: 34,
       [MEDIA_LARGE_LAPTOP]: {
         fontSize: 25,
