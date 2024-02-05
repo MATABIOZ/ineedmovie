@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/store/store";
 import { Banner } from "../../../shared/banner/banner";
 import { ContentWrapper } from "../../../shared/content_wrapper/content_wrapper";
 import { CustomSwiper } from "../../../shared/custom_swiper/custom_swiper";
+import { Footer } from "../../footer/footer";
 import { Header } from "../../header/header";
 
 import {
@@ -106,6 +107,7 @@ export const SingleMovie = () => {
           </ContentWrapper>
         </>
       )}
+      <Footer />
     </>
   );
 };

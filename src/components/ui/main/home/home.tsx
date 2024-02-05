@@ -2,6 +2,7 @@ import { useAppSelector } from "../../../../redux/store/store";
 import { ContentWrapper } from "../../../shared/content_wrapper/content_wrapper";
 import { CustomSwiper } from "../../../shared/custom_swiper/custom_swiper";
 import { ErrorMessage } from "../../../shared/error_message/error_message";
+import { Footer } from "../../footer/footer";
 import { Header } from "../../header/header";
 
 export const Home = () => {
@@ -25,6 +26,7 @@ export const Home = () => {
             swiperClassPostfix={"banner"}
           />
           <ContentWrapper groupType={"main"} />
+          <Footer />
         </>
       )}
     </>
