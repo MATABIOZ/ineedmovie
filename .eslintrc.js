@@ -44,7 +44,6 @@ module.exports = {
   ],
   env: {
     browser: true,
-    node: true,
   },
   ignorePatterns: ["next-env.d.ts", "**/*.css", "**/*.scss", "_server.ts"],
   rules: {
