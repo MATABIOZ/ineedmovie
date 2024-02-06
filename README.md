@@ -1,3 +1,5 @@
 # ineedmovie
 
-React movie finder
+React movie finder.
+
+Homepage: https://matabioz.github.io/ineedmovie/build
