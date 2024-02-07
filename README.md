@@ -2,4 +2,4 @@
 
 React movie finder.
 
-Homepage: https://matabioz.github.io/ineedmovie/build
+Homepage(VPN may be required to download content correctly): https://matabioz.github.io/ineedmovie/build
